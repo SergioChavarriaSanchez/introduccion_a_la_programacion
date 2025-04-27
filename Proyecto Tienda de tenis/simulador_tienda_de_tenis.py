@@ -1,4 +1,5 @@
-catalogo = [
+#lista de catalogo de tenis, con diccionarios por cada marca. 
+catalogo = [ 
     {
         "marca": "nike",
         "modelos": {
@@ -83,14 +84,14 @@ while (True):
         marca_elegida = input("\nIngrese la marca a escoger: ").lower() #Se pregunta por la marca a escoger.
         print("")
         marca_encontrada = False
-        for marca in catalogo: #Se muestran los modelos de la marca escogida.
+        for marca in catalogo: #Se valida que la marca exista y se muestran los modelos de la marca escogida.
             if marca["marca"] == marca_elegida:
                 marca_encontrada=True
                 print(f"Modelos disponibles de {marca_elegida.capitalize()}: ")
                 for modelo, datos in marca["modelos"].items():
                     print(f"- {modelo.capitalize()}: ${datos["precio"]} Stock: {datos["stock"]}")
-                modelo_elegido = input("\nIngrese el modelo para añadir al carrito: ").lower()
-                if modelo_elegido in marca["modelos"]:
+                modelo_elegido = input("\nIngrese el modelo para añadir al carrito: ").lower() #Se pregunta por el modelo que quiere añadir al carrito.
+                if modelo_elegido in marca["modelos"]: #Se valida que el modelo escogido exista y se agrega al carrito.
                     if marca["modelos"][modelo_elegido]["stock"]>0:
                         carrito.append({
                             "marca": marca_elegida,
@@ -106,7 +107,7 @@ while (True):
         if marca_encontrada == False:
             print("Esta marca no está disponible en nuestro catálogo! ")
             
-    elif opcion == "2": #Mostramos el carrito de compras.
+    elif opcion == "2": #Mostramos el carrito de compras con los modelos agregados y el total del precio.
         print("\nCarrito de compras: ")
         if len(carrito) > 0:
             for producto_agregado in carrito:
@@ -115,23 +116,23 @@ while (True):
             print("Precio total: $", total)
             carrito_vacio=False
         else:
-            print("El carrito está vacio. ")
+            print("El carrito está vacio. ") #Si el carrito está vacio.
             carrito_vacio=True
         if carrito_vacio == True:
             opcion_carrito=input("\nIngrese cualquier digito para regresar al menú: ")
             continue
         else:
             contador = 1
-            opcion_carrito=input("\n1- Volver a la tienda o 2- Finalizar compra: ")
+            opcion_carrito=input("\n1- Volver a la tienda o 2- Finalizar compra: ") #Se da la opcion de terminar la compra o regresar al menú inicial.
             if opcion_carrito == "1":
                 continue
             elif opcion_carrito == "2":
                 print("\nElija un metodo de pago: ")
-                metodo_de_pago=input("1- Tarjeta de credito o 2- Sinpe movil: ")
+                metodo_de_pago=input("1- Tarjeta de credito/debito o 2- Sinpe movil: ") #Damos a escoger entre 2 metodos de pago (tarjeta o sinpe)
                 if metodo_de_pago == "1":
                     while True:
                         try:
-                            num_tarjeta = int(input("Ingrese su número de tarjeta: "))
+                            num_tarjeta = int(input("Ingrese su número de tarjeta: ")) #Validación de la tarjeta.
                             if len(str(num_tarjeta)) == 16:
                                 break
                             else:
@@ -147,7 +148,7 @@ while (True):
                         contador = 1
                         while True:
                             try:
-                                fecha_vencimiento=int(input("Ingrese el año de vencimiento: "))    
+                                fecha_vencimiento=int(input("Ingrese el año de vencimiento: ")) #Validación de la fecha de vencimiento de la tarjeta.   
                                 if fecha_vencimiento >= 2025:
                                     break
                                     
@@ -164,7 +165,7 @@ while (True):
                             contador=1
                             while True:
                                 try:
-                                    cvv = int(input("Ingrese el código de seguridad (cvv): "))
+                                    cvv = int(input("Ingrese el código de seguridad (cvv): ")) #Validación del codigo de seguridad de la tarjeta.
                                     if len(str(cvv)) == 3:
                                         break
                                     else:
@@ -178,7 +179,7 @@ while (True):
                                     break
                     if contador <=3:
                         compra=True
-                        print("\nFactura: ")
+                        print("\nFactura: ")  #Se muestra la factura y se confirma la compra.
                         for producto_agregado in carrito:
                             print(f"- {producto_agregado["modelo"]}: ${producto_agregado["precio"]}")
                             total+=producto_agregado["precio"]
@@ -190,13 +191,13 @@ while (True):
                                 if marca["marca"] == producto_agregado["marca"]:
                                     if producto_agregado["modelo"] in marca["modelos"]:
                                         marca["modelos"][producto_agregado["modelo"]]["stock"] -= 1
-                        carrito.clear()
+                        carrito.clear() #Se vacia el carrito cuando la compra se realiza.
                 elif metodo_de_pago == "2":
                     print("Realice el sinpe al siguiente numero: 8439-9902")
                     contador=1
                     while True:
                         try:
-                            comprobante=int(input("Ingrese el numero de comprobante: "))
+                            comprobante=int(input("Ingrese el numero de comprobante: ")) #Validacion del numero de comprobante del sinpe.
                             if len(str(comprobante)) == 25:
                                 break
                             else:
@@ -208,8 +209,8 @@ while (True):
                         if contador > 3:
                             print("\nLimite de intentos fallidos alcanzado, regresando al menú principal! ")
                             break
-                    if contador <= 3:
-                        compra=True
+                    if contador <= 3:  #Se confirma el pago con el metodo sinpe.
+                        compra=True 
                         print("\nFactura: ")
                         for producto_agregado in carrito:
                             print(f"- {producto_agregado["modelo"]}: ${producto_agregado["precio"]}")
@@ -223,15 +224,15 @@ while (True):
                                     if producto_agregado["modelo"] in marca["modelos"]:
                                         marca["modelos"][producto_agregado["modelo"]]["stock"] -= 1
                         carrito.clear()
-    elif opcion == "3":
+    elif opcion == "3":  #Se da una actualizacion del estado del pedido.
         if compra == True:
             print("\nEl pedido ha sido enviado con exito a:", direccion)
         else:
             print("\nNo hay ninguna entrega pendiente. ")
-    elif opcion == "4":
+    elif opcion == "4":     #opcion para el menú de administrador, opciones para añadir modelos o marcas al catalogo.
         intentos = 0
         while intentos < 3 and acceso == False:
-            clave = input("Digite la clave de administrador: ")
+            clave = input("Digite la clave de administrador: ") #Se necesita la clave para poder acceder.
             if clave == clave_admin:
                 acceso = True
                 break
@@ -242,38 +243,38 @@ while (True):
         if acceso == False:
             print("\nAcceso denegado, superó el limite de intentos! ")
         else:
-            while True:
+            while True: #Mostramos el menú de administrador.
                 print("\nMenú de administrador: \n1- Añadir marcas al catálogo.\n2- Añadir modelos a marcas disponibles.\n3- Salir al menú principal. ")
                 opcion_admin = input("\nIngrese una opción del menú: ")
                 if opcion_admin == "1":
-                    nueva_marca = input("Ingrese el nombre de la marca que desea agregar: ").lower()
+                    nueva_marca = input("Ingrese el nombre de la marca que desea agregar: ").lower() #Opcion para agregar marcas al catalogo.
                     marca_existe=False
                     for marca in catalogo:
-                        if marca["marca"] == nueva_marca:
+                        if marca["marca"] == nueva_marca: #se verifica que la marca no este agregada ya en el catalogo.
                             print("\nLa marca ya existe en el catálogo! ")
                             marca_existe = True
                             break
-                    if marca_existe == False:
+                    if marca_existe == False: #Se agrega la marca al catalogo.
                         catalogo.append({
                             "marca": nueva_marca,
                             "modelos": {}
                         })
                         print(f"\nLa marca: {nueva_marca.capitalize()} ha sido agregada al catálogo. ")
                         
-                elif opcion_admin == "2":
+                elif opcion_admin == "2": #Opcion para añadir modelos a marcas ya existentes.
                     print("\nMarcas disponibles: ")
-                    for marca in catalogo:
+                    for marca in catalogo: #Se muestran las marcas ya existentes.
                         print("-" + marca["marca"].capitalize())
                     marca_seleccionada = input("\nIngrese la marca en la que quiere añadir un nuevo modelo: ").lower()
                     marca_encontrada=False
                     for marca in catalogo:
-                        if marca["marca"] == marca_seleccionada:
+                        if marca["marca"] == marca_seleccionada: #Se verifica que la marca exista dentro del catalogo.
                             nuevo_modelo = input(f"Ingrese el nombre del modelo para añadir a \"{marca_seleccionada.capitalize()}\": ").lower()
                             if nuevo_modelo in marca["modelos"]:
                                 print("El modelo ya está disponible en nuestra tienda! ")
                                 break
                             else:
-                                while True:
+                                while True: #Se pregunta por el precio y la cantidad en stock, y se hace la validacion de cada uno.
                                     try:
                                         precio = int(input("Ingrese el precio del modelo: "))
                                         break
@@ -286,7 +287,7 @@ while (True):
                                     except:
                                         print("Cantidad invalida! ")
                                 
-                                marca["modelos"][nuevo_modelo] = {
+                                marca["modelos"][nuevo_modelo] = { #Se agrega el modelo a la marca.
                                     "precio":precio,
                                     "stock":stock
                                 }
@@ -296,7 +297,7 @@ while (True):
                     if marca_encontrada == False:
                         print("\nLa marca no está disponible en el catálogo. ")
                             
-                elif opcion_admin == "3":
+                elif opcion_admin == "3": #Salimos del menú de administrador y volvemos al principal.
                     break
                 else:
                     print("Opción invalida. ")
