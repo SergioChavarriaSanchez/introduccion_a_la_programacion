@@ -109,6 +109,7 @@ while (True):
             
     elif opcion == "2": #Mostramos el carrito de compras con los modelos agregados y el total del precio.
         print("\nCarrito de compras: ")
+        total = 0
         if len(carrito) > 0:
             for producto_agregado in carrito:
                 print(f"- {producto_agregado["modelo"].capitalize()}: ${producto_agregado["precio"]}")
@@ -180,6 +181,7 @@ while (True):
                     if contador <=3:
                         compra=True
                         print("\nFactura: ")  #Se muestra la factura y se confirma la compra.
+                        total = 0
                         for producto_agregado in carrito:
                             print(f"- {producto_agregado["modelo"]}: ${producto_agregado["precio"]}")
                             total+=producto_agregado["precio"]
@@ -212,6 +214,7 @@ while (True):
                     if contador <= 3:  #Se confirma el pago con el metodo sinpe.
                         compra=True 
                         print("\nFactura: ")
+                        total = 0
                         for producto_agregado in carrito:
                             print(f"- {producto_agregado["modelo"]}: ${producto_agregado["precio"]}")
                             total+=producto_agregado["precio"]
